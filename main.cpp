@@ -9,10 +9,12 @@
 // - Simulasi eksekusi proses (FIFO)
 // - Undo proses terakhir (Stack manual)
 // - Tampilkan proses dalam Linked List dan Tree
+// - Hapus proses berdasarkan ID
 // ------------------------------------------------------------------
 
 #include <iostream>
 #include <cstdlib>
+#include <limits>
 #ifdef _WIN32
 #include <windows.h>
 #endif
@@ -53,6 +55,7 @@ void tampilkanMenu()
     cout << "6. Undo Tambah Proses Terakhir\n";
     cout << "7. Tampilkan Linked List Proses\n";
     cout << "8. Tampilkan Hirarki Tree Proses\n";
+    cout << "9. Hapus Proses by ID\n";
     cout << "0. Keluar\n";
     cout << "Pilih: ";
 }
@@ -84,15 +87,28 @@ int main()
             cout << "Nama Proses: ";
             getline(cin, name);
             cout << "Burst Time: ";
-            cin >> burst;
+            while (!(cin >> burst)) {
+                cout << "Input harus berupa angka! Masukkan ulang Burst Time: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
+
             cout << "Prioritas: ";
-            cin >> priority;
+            while (!(cin >> priority)) {
+                cout << "Input harus berupa angka! Masukkan ulang Prioritas: ";
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            }
             cin.ignore();
 
             if (rootTree != nullptr)
             {
                 cout << "ID Parent (masukkan -1 untuk root): ";
-                cin >> parentId;
+                while (!(cin >> parentId)) {
+                    cout << "Input harus berupa angka! Masukkan ulang ID Parent: ";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
                 cin.ignore();
             }
 
@@ -190,7 +206,11 @@ int main()
             {
                 Process last = undoStack.pop();
                 manager.removeById(last.id);
-                cout << "Undo berhasil: Proses '" << last.name << "' dihapus.\n";
+                queueSim.removeById(last.id);
+                listProses.removeById(last.id);
+                if (rootTree)
+                    rootTree->removeById(last.id);
+                cout << "Undo berhasil: Proses '" << last.name << "' dihapus dari semua struktur data.\n";
             }
             else
             {
@@ -216,6 +236,26 @@ int main()
             }
             waitForUser();
             break;
+
+            case 9:
+            {
+                int id;
+                cout << "Masukkan ID Proses yang ingin dihapus: ";
+                while (!(cin >> id))
+                {
+                    cout << "Input tidak valid. Masukkan ID Proses: ";
+                    cin.clear();
+                    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                }
+                manager.removeById(id);
+                queueSim.removeById(id);
+                undoStack.removeById(id);
+                listProses.removeById(id);
+                if (rootTree) rootTree->removeById(id);
+                cout << "Proses dengan ID " << id << " berhasil dihapus.\n";
+                waitForUser();
+                break;
+            }
 
         case 0:
             cout << "Program selesai. Terima kasih!\n";

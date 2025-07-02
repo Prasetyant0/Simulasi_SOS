@@ -53,6 +53,31 @@ public:
         }
     }
 
+    void removeById(int id)
+    {
+        Node *current = head;
+        Node *prev = nullptr;
+
+        while (current)
+        {
+            if (current->data.id == id)
+            {
+                if (prev)
+                {
+                    prev->next = current->next;
+                }
+                else
+                {
+                    head = current->next;
+                }
+                delete current;
+                return;
+            }
+            prev = current;
+            current = current->next;
+        }
+    }
+
     ~LinkedList()
     {
         while (head)

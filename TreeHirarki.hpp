@@ -65,6 +65,43 @@ struct TreeNode
         }
         return nullptr;
     }
+
+    bool removeById(int id)
+    {
+        if (data.id == id)
+        {
+            return true;
+        }
+
+        TreeNode *prev = nullptr;
+        TreeNode *current = firstChild;
+
+        while (current)
+        {
+            if (current->data.id == id)
+            {
+                if (prev)
+                {
+                    prev->nextSibling = current->nextSibling;
+                }
+                else
+                {
+                    firstChild = current->nextSibling;
+                }
+                delete current;
+                return true;
+            }
+
+            if (current->removeById(id))
+            {
+                return true;
+            }
+
+            prev = current;
+            current = current->nextSibling;
+        }
+        return false;
+    }
 };
 
 #endif

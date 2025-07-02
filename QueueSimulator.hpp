@@ -1,6 +1,6 @@
 // QueueSimulator.hpp
 // ----------------------------------------------------
-// Implementasi struktur data Queue manual (circular queue).
+// Implementasi Queue.
 // Digunakan untuk mensimulasikan eksekusi proses secara FIFO.
 // Menyediakan fungsi enqueue (tambahkan ke antrian),
 // dan simulateExecution (menjalankan proses satu per satu).
@@ -60,7 +60,7 @@ public:
             return;
         }
 
-        cout << "\\nSimulasi Eksekusi Proses:" << endl;
+        cout << "Simulasi Eksekusi Proses:" << endl;
         while (size > 0)
         {
             Process p = dequeue();
@@ -68,6 +68,26 @@ public:
             p.display();
             p.status = "Finished";
             cout << "--> Selesai Eksekusi" << endl;
+        }
+    }
+
+    void removeById(int id)
+    {
+        Process tempQueue[MAX];
+        int tempSize = 0;
+
+        while (size > 0)
+        {
+            Process p = dequeue();
+            if (p.id != id)
+            {
+                tempQueue[tempSize++] = p;
+            }
+        }
+
+        for (int i = 0; i < tempSize; i++)
+        {
+            enqueue(tempQueue[i]);
         }
     }
 };

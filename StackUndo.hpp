@@ -47,6 +47,27 @@ public:
         }
     }
 
+    void removeById(int id)
+    {
+        int found = -1;
+        for (int i = 0; i <= top; i++)
+        {
+            if (stack[i].id == id)
+            {
+                found = i;
+                break;
+            }
+        }
+        if (found != -1)
+        {
+            for (int i = found; i < top; i++)
+            {
+                stack[i] = stack[i + 1];
+            }
+            top--;
+        }
+    }
+
     bool isEmpty() const
     {
         return top == -1;

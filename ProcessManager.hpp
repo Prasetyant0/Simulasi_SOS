@@ -12,6 +12,8 @@
 #ifndef PROCESS_MANAGER_HPP
 #define PROCESS_MANAGER_HPP
 
+#include <algorithm>
+#include <cctype>
 #include "Process.hpp"
 
 const int MAX = 100;
@@ -37,7 +39,6 @@ public:
         return idCounter++;
     }
 
-    // Menambahkan proses baru ke array
     void addProcess(const Process &p)
     {
         if (count < MAX)
@@ -50,7 +51,6 @@ public:
         }
     }
 
-    // Menampilkan semua proses
     void showProcesses() const
     {
         if (count == 0)
@@ -66,7 +66,7 @@ public:
         }
     }
 
-    // Sorting berdasarkan burst time (ascending)
+    // Sorting berdasarkan burst time (ascending) Bubble Sort
     void sortByBurstTime()
     {
         for (int i = 0; i < count - 1; i++)
@@ -81,7 +81,7 @@ public:
         }
     }
 
-    // Sorting berdasarkan prioritas (ascending)
+    // Sorting berdasarkan prioritas (ascending) Bubble Sort
     void sortByPriority()
     {
         for (int i = 0; i < count - 1; i++)
@@ -96,7 +96,7 @@ public:
         }
     }
 
-    // Mencari proses berdasarkan ID (mengembalikan index atau -1)
+    // Mencari proses berdasarkan ID Linear Search
     int searchById(int id) const
     {
         for (int i = 0; i < count; i++)
@@ -107,12 +107,15 @@ public:
         return -1;
     }
 
-    // Mencari proses berdasarkan nama (mengembalikan index atau -1)
     int searchByName(const string &name) const
     {
+        string searchLower = name;
+        transform(searchLower.begin(), searchLower.end(), searchLower.begin(), [](unsigned char c){ return tolower(c); });
         for (int i = 0; i < count; i++)
         {
-            if (processes[i].name == name)
+            string procName = processes[i].name;
+            transform(procName.begin(), procName.end(), procName.begin(), [](unsigned char c){ return tolower(c); });
+            if (procName.find(searchLower) != string::npos)
                 return i;
         }
         return -1;
@@ -136,7 +139,7 @@ public:
         }
     }
 
-    // Mengambil seluruh array proses (untuk baca-tulis dari luar)
+    // Mengambil seluruh array proses
     Process *getProcesses()
     {
         return processes;
