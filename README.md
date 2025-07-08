@@ -68,6 +68,7 @@ Simulasi Mini-SOS adalah program berbasis C++ yang mensimulasikan fitur dasar da
 - Undo proses terakhir (stack)
 - Visualisasi linked list proses
 - Visualisasi hirarki proses dalam tree
+- Hapus data by ID
 
 ---
 

@@ -37,7 +37,7 @@ struct TreeNode
     {
         for (int i = 0; i < depth; ++i)
             cout << "  ";
-        cout << "↳ ";
+        cout << "-> ";
         data.display();
 
         if (firstChild)
